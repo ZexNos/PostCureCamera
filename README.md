@@ -51,8 +51,8 @@ ESP32-S3-DevKitC-1, датчики SHT31 × 2 и DS18B20, дисплей **ST778
 - [PostCure_Camera_SPEC_MASTER_v0.2.1.md](docs/PostCure_Camera_SPEC_MASTER_v0.2.1.md) — мастер‑спецификация, заменяющая старые control_logic и test_UI.
 
 ### 🧩 UI и визуальная логика
-- [UI_Lists_and_Diff_Render.md](sandbox:/mnt/data/UI_Lists_and_Diff_Render.md) — принципы отрисовки, структура ListCtx, diff‑обновление CONTENT.  
-- [UI_Feature_Sandbox_Methodology.md](sandbox:/mnt/data/UI_Feature_Sandbox_Methodology.md) — песочница для изолированного тестирования экранов.  
+- [UI_Lists_and_Diff_Render.md](docs/README_Files/UI_Lists_and_Diff_Render.md) — принципы отрисовки, структура ListCtx, diff‑обновление CONTENT.  
+- [UI_Feature_Sandbox_Methodology.md](docs/README_Files/UI_Feature_Sandbox_Methodology.md) — песочница для изолированного тестирования экранов.  
 - [postcure_camera_UI_style_guide.md](docs/postcure_camera_UI_style_guide.md) — визуальный стиль и структура экранов (TOP/BOTTOM/CONTENT).
 
 ### ☢️ Безопасность, индикация, процессы
