@@ -46,7 +46,7 @@ ESP32-S3-DevKitC-1, датчики SHT31 × 2 и DS18B20, дисплей **ST778
 ## 📘 Документы и методики (обновлено 2025-11-09 11:14)
 
 ### 🔧 Основные конфигурационные файлы
-- [BuildFlags.md](sandbox:/mnt/data/BuildFlags.md) — описание флагов сборки, DEV/DBG‑режимов и матрицы этапов (A–F).  
+- [BuildFlags.md](docs/README_Files/BuildFlags.md) — описание флагов сборки, DEV/DBG‑режимов и матрицы этапов (A–F).  
 - [PostCure_Modular_Map_v1.0.md](docs/PostCure_Modular_Map_v1.0.md) — архитектурная карта модулей (обновлена: Wi‑Fi/MQTT UI помечены deprecated).  
 - [PostCure_Camera_SPEC_MASTER_v0.2.1.md](docs/PostCure_Camera_SPEC_MASTER_v0.2.1.md) — мастер‑спецификация, заменяющая старые control_logic и test_UI.
 
@@ -56,13 +56,13 @@ ESP32-S3-DevKitC-1, датчики SHT31 × 2 и DS18B20, дисплей **ST778
 - [postcure_camera_UI_style_guide.md](docs/postcure_camera_UI_style_guide.md) — визуальный стиль и структура экранов (TOP/BOTTOM/CONTENT).
 
 ### ☢️ Безопасность, индикация, процессы
-- [RGB_Safety_UVLOCK.md](sandbox:/mnt/data/RGB_Safety_UVLOCK.md) — поведение RGB‑индикатора, SAFE_STATE, UV‑LOCK.  
-- [Presets.md](sandbox:/mnt/data/Presets.md) — структура и стартовые профили режимов CURE/DRY.  
-- [FREEZE_TESTS_PostCureCamera_v1.0.md](sandbox:/mnt/data/FREEZE_TESTS_PostCureCamera_v1.0.md) — чек‑лист заморозки модулей Display/Encoder/Pins/Colors.
+- [RGB_Safety_UVLOCK.md](docs/README_Files/RGB_Safety_UVLOCK.md) — поведение RGB‑индикатора, SAFE_STATE, UV‑LOCK.  
+- [Presets.md](sdocs/README_Files/Presets.md) — структура и стартовые профили режимов CURE/DRY.  
+- [FREEZE_TESTS_PostCureCamera_v1.0.md](docs/README_Files/FREEZE_TESTS_PostCureCamera_v1.0.md) — чек‑лист заморозки модулей Display/Encoder/Pins/Colors.
 
 ### 🌐 Сеть и интеграция
-- [WiFi_Access_Note.md](sandbox:/mnt/data/WiFi_Access_Note.md) — жёсткая конфигурация Wi‑Fi (SSID, PASS, hostname).  
-- [MQTT_Access_Note.md](sandbox:/mnt/data/MQTT_Access_Note.md) — параметры брокера Home Assistant (MQTT).  
+- [WiFi_Access_Note.md](docs/README_Files/WiFi_Access_Note.md) — жёсткая конфигурация Wi‑Fi (SSID, PASS, hostname).  
+- [MQTT_Access_Note.md](docs/README_Files/MQTT_Access_Note.md) — параметры брокера Home Assistant (MQTT).  
 
 > **Примечание:** Wi‑Fi и MQTT теперь инициализируются жёстко из кода (см. BuildFlags.md, WIFI_HARDCODED/MQTT_HARDCODED). UI‑экраны настройки удалены из меню.
 
