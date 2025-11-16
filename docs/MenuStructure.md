@@ -39,23 +39,6 @@ HOME
 │           └─ (прогресс/индикаторы)
 └─ SETUP
    └─ SYSTEM SETTINGS
-      ├─ Wi-Fi Setup
-      │  ├─ (список SSID + AP)
-      │  └─ Back
-      │     └─ Wi-Fi Password Input
-      │        ├─ [ поле ввода ]
-      │        └─ Кнопки: Back · Del · OK
-      │           └─ CONNECTION STATUS
-      │              ├─ Connecting...
-      │              ├─ IP: …
-      │              ├─ MQTT: Connected/…
-      │              └─ Back
-      ├─ MQTT Settings
-      │  ├─ Broker IP        (редактирование → Input)
-      │  ├─ Broker Port      (редактирование → Input)
-      │  ├─ Topic Root       (редактирование → Input)
-      │  ├─ Save
-      │  └─ Back
       ├─ OTA Update
       │  ├─ Check for update
       │  ├─ Download vX.Y.Z
@@ -99,3 +82,4 @@ HOME
       │     ├─ MQTT + OTA ready
       │     └─ Back
       └─ Back
+
