@@ -43,7 +43,7 @@
     mqtt/MqttClientEx.h/.cpp
     storage/Storage.h/.cpp
     sensors/Sensors.h/.cpp
-    actuators/Actuators.h/.cpp
+    actuators/Actuators.h/.cpp  // реализация Heater/Fan по контракту 07_HEATER_FAN_CONTROL.md
     telemetry/Telemetry.h/.cpp
 
   /ui                          // визуальные экраны, роутер, без бизнес‑логики
@@ -95,7 +95,7 @@ WiFiManager — STA, scan, connect, auto‑reconnect.
 MqttClientEx — PubSubClient, publish/subscribe.  
 Storage — NVS (Wi‑Fi, MQTT, presets).  
 Sensors — чтение и усреднение данных.  
-Actuators — UV, Heater, Fans (с Safety).  
+Actuators — UV, Heater, Fans (с Safety), реализация контракта Heater/Fan (см. `07_HEATER_FAN_CONTROL.md`).  
 Telemetry — JSON state → MQTT.
 
 ### 2.4 ui/
@@ -107,6 +107,13 @@ Pins — GPIO/LEDC.
 BuildFlags — HAS_WIFI, HAS_MQTT и др.  
 Colors — тёмная тема, #FFA040.  
 Spec — частоты, пороги, топики.
+
+### 2.6 Heater/Fan Control (контракт)
+
+Логика управления PTC-нагревателем и вентилятором теплообдува вынесена в отдельный документ  
+`07_HEATER_FAN_CONTROL.md`.  
+Actuators и Safety должны рассматриваться как реализация этого контракта: PWM-таблицы, поведение по состояниям,
+ограничения скорости изменения (slew-rate) и правила after-cool.
 
 ---
 
@@ -277,4 +284,5 @@ ESP32 GPIO_2 → BC337 → SSR CH2 → AC 220 В → Motor
 ## 📘 Примечание
 
 Для визуализации электрических связей (в формате SVG или ASCII) в следующих версиях файла будут добавлены простые схемы от ESP32 до реле и нагрузки, а также группировка узлов по зонам (логика / силовая / сенсорная).
+
 
