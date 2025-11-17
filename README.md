@@ -1,89 +1,92 @@
+# Post-Cure Camera — Documentation
 
-# 🧠 Post‑Cure Camera Project — Master Index
-
-> Все методические и технические документы находятся в папке [`docs/README_Files`](docs/README_Files).
-
-Этот README связывает все ключевые файлы проекта и служит входной точкой для работы с логикой, схемами, тестами и прошивкой.
+Этот репозиторий содержит полную техническую документацию проекта **Post-Cure Camera** — компактной UV-камеры для пост-обработки фотополимерной печати и сушки филамента. Документы собраны из множества исходных файлов и структурированы в компактный набор из нескольких логических разделов.
 
 ---
 
-## 📎 Связанные документы проекта
+## Структура документации
 
-| Раздел | Файл | Назначение |
-|---|---|---|
-| 1. BOM / Комплектующие | [postcure_camera_BOM_20251026_222103.md](docs/postcure_camera_BOM_20251026_222103.md) | Финальный перечень компонентов, ревизия v2.0. |
-| 2. Схемы и подключения | [postcure_camera_wiring.md](docs/postcure_camera_wiring.md) | Разводка: ESP32-S3, SSR, UV, питание, датчики, вентиляторы. |
-| 3. Спецификация логики | [PostCure_Camera_SPEC_MASTER_v0.2.1.md](docs/PostCure_Camera_SPEC_MASTER_v0.2.1.md) | Единый SPEC (заменяет старые control_logic / bringup docs). |
-| 4. Архитектурная карта | [PostCure_Modular_Map_v1.0.md](docs/PostCure_Modular_Map_v1.0.md) | Модули и связи (Wi-Fi/MQTT UI — deprecated). |
-| 5. Методики / Ноты | см. раздел ниже | BuildFlags, UI Sandbox, Freeze, Wi-Fi/MQTT, Presets и др. |
+### **00_OVERVIEW_AND_INDEX.md**  
+Главная точка входа.  
+Краткое описание проекта и навигационный индекс.
+
+### **01_SPEC_MASTER.md**  
+Полная спецификация устройства: аппаратная конфигурация, программные ограничения, требования к подсистемам.
+
+### **02_ARCHITECTURE_AND_WIRING.md**  
+Архитектура системы и проводка:
+- Modular Map  
+- Логические подсистемы  
+- Wiring и схемы подключения  
+
+### **03_UI_STYLE_AND_FLOW.md**  
+Стиль и организация интерфейса:
+- Цвета  
+- Типографика  
+- Структура экранов  
+- Логика меню  
+- Методика UI-песочницы и правила diff-рендеринга  
+
+### **04_NETWORK_BUILD_AND_DEV_INFRA.md**  
+Инфраструктурные компоненты:
+- BuildFlags  
+- Wi-Fi onboarding  
+- MQTT дерево тем  
+- Protected Files  
+- Freeze-тесты  
+
+### **05_PRESETS_SAFETY_AND_UVLOCK.md**  
+Логика режимов и безопасность:
+- Пресеты CURE и DRY  
+- Ограничения нагрева  
+- Поведение UVLOCK  
+- RGB-индикатор  
+
+### **06_BOM.md**  
+Полная спецификация компонентов:
+- Все ревизии  
+- Обозначения  
+- Совместимость и требования  
+
+### **99_STAGE_SUMMARIES.md**  
+Архивные отчёты по этапам разработки:
+- Stage A (Display + Encoder)  
+- Stage B (Wi-Fi Subsystem)  
+
+---
+
+## Принципы структуры
+
+1. Каждый файл отражает отдельный аспект системы.  
+2. Все исходные материалы сохранены внутри разделов.  
+3. Документация расширяема — для новых подсистем можно добавлять файлы вида:
+4. Перекрытия между файлами минимизированы.
 
 ---
 
-## 📄 Краткое описание проекта
+## Назначение репозитория
 
-Post-Cure Camera — камера для UV-отверждения смол и сушки филамента.  
-ESP32-S3-DevKitC-1, датчики SHT31 × 2 и DS18B20, дисплей **ST7789 160×128 (landscape)**, энкодер, статус-бар; интеграция с Home Assistant (MQTT).
+Документация служит:
 
-**Основные функции**
-- UV-отверждение: 30 × 3 Вт (400 нм), SSR-коммутация.
-- Сушка филамента: 45–90 °C, внутренний/выхлопной вентиляторы, **UV-LOCK** (без УФ).
-- PID-контроль нагрева; пресеты CURE/DRY.
-- Wi-Fi + MQTT (**HARDCODED**, без экранов настройки).
-- Safety: дверь/перегрев/сбой датчиков; RGB-индикатор состояний.
+- источником инженерных требований  
+- техническим основанием для разработки прошивки  
+- UI/UX референсом  
+- полной картой подсистем устройства  
+- историей развития проекта  
 
 ---
 
-Список замороженных файлов и правила их изменения описаны здесь:
+## Как пользоваться
 
-- docs/PROTECTED_FILES.md
-
-Изменения в этих файлах допускаются только через явную процедуру UNFREEZE
-с обновлением FREEZE-тестов и документации.
-
----
-
-## ⚙️ Текущее состояние
-
-✅ Все ключевые компоненты закуплены и протестированы по BOM v2.0.  
--🟢 Начата интеграция RGB-индикатора и экрана ST7735.  
--🟠 В работе: реализация логики Bring-Up UI и дальнейшее объединение с MQTT-контроллером.  
-+🟢 Stage A: заморожены драйверы экрана ST7789 128×160, EncoderDrv, Pins.h, Colors.h и верхняя статус-строка RUN VIEW (см. `docs/PROTECTED_FILES.md`).  
-+🟠 Stage C: в работе фоновый Wi-Fi/MQTT (подключение к фиксированным SSID и топикам без каких-либо сетевых меню в UI).  
-
-> Все методические файлы: [`docs/README_Files`](docs/README_Files).
+1. Для начала разработки изучите **01_SPEC_MASTER.md**.  
+2. Для понимания структуры — **02_ARCHITECTURE_AND_WIRING.md**.  
+3. Для реализации интерфейса — **03_UI_STYLE_AND_FLOW.md**.  
+4. Для сетевых функций и сборки — **04_NETWORK_BUILD_AND_DEV_INFRA.md**.  
+5. Для логики режимов — **05_PRESETS_SAFETY_AND_UVLOCK.md**.  
+6. Для аппаратных изменений — **06_BOM.md**.  
 
 ---
-## 📘 Документы и методики (обновлено 2025-11-09 11:14)
 
-### 🔧 Основные конфигурационные файлы
-- [BuildFlags.md](docs/README_Files/BuildFlags.md) — описание флагов сборки, DEV/DBG‑режимов и матрицы этапов (A–F).  
-- [PostCure_Modular_Map_v1.0.md](docs/PostCure_Modular_Map_v1.0.md) — архитектурная карта модулей (обновлена: Wi‑Fi/MQTT UI помечены deprecated).  
-- [PostCure_Camera_SPEC_MASTER_v0.2.1.md](docs/PostCure_Camera_SPEC_MASTER_v0.2.1.md) — мастер‑спецификация, заменяющая старые control_logic и test_UI.
+## Статус
 
-### 🧩 UI и визуальная логика
-- [UI_Lists_and_Diff_Render.md](docs/README_Files/UI_Lists_and_Diff_Render.md) — принципы отрисовки, структура ListCtx, diff‑обновление CONTENT.  
-- [UI_Feature_Sandbox_Methodology.md](docs/README_Files/UI_Feature_Sandbox_Methodology.md) — песочница для изолированного тестирования экранов.  
-- [postcure_camera_UI_style_guide.md](docs/postcure_camera_UI_style_guide.md) — визуальный стиль и структура экранов (TOP/BOTTOM/CONTENT).
-
-### ☢️ Безопасность, индикация, процессы
-- [RGB_Safety_UVLOCK.md](docs/README_Files/RGB_Safety_UVLOCK.md) — поведение RGB‑индикатора, SAFE_STATE, UV‑LOCK.  
-- [Presets.md](sdocs/README_Files/Presets.md) — структура и стартовые профили режимов CURE/DRY.  
-- [FREEZE_TESTS_PostCureCamera_v1.0.md](docs/README_Files/FREEZE_TESTS_PostCureCamera_v1.0.md) — чек‑лист заморозки модулей Display/Encoder/Pins/Colors.
-
-### 🌐 Сеть и интеграция
-- [WiFi_Access_Note.md](docs/README_Files/WiFi_Access_Note.md) — жёсткая конфигурация Wi‑Fi (SSID, PASS, hostname).  
-- [MQTT_Access_Note.md](docs/README_Files/MQTT_Access_Note.md) — параметры брокера Home Assistant (MQTT).  
-
-> **Примечание:** Wi‑Fi и MQTT теперь инициализируются жёстко из кода (см. BuildFlags.md, WIFI_HARDCODED/MQTT_HARDCODED). UI‑экраны настройки удалены из меню.
-
----
-### 🧱 Статус модулей (Freeze)
-| Модуль | Статус | Примечание |
-|--------|:--------:|------------|
-| DisplayST7789 | 🟢 Frozen | Инициализация, diff‑отрисовка и зоны TOP/BOTTOM/CONTENT прошли freeze‑тесты. |
-| EncoderDrv | 🟢 Frozen | Стабильные события вращения/клика/долгого нажатия. |
-| Wi‑Fi Subsystem | 🟢 Frozen | Жёсткая конфигурация, стабильное подключение. |
-| MQTT Subsystem | 🟠 In progress | Подключение к HA, статусы в топ‑баре. |
-| Safety / RGB / Presets | ⚙️ В работе | Поведение описано в RGB_Safety_UVLOCK.md и Presets.md. |
-
----
+Документация обновляется по мере развития проекта Post-Cure Camera.
