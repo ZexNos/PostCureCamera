@@ -83,7 +83,7 @@
   notes: "Nylon / PA"
 }
 
-
+```
 ## CURE пресеты (engineering-grade)
 ```json
 {
