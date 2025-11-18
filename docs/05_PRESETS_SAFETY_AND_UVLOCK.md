@@ -33,102 +33,102 @@
 ## DRY пресеты (актуальная UV-LOCK политика)
 ```json
 [
-{
-  mode: DRY,
-  name: "DRY_PLA",
-  target_temp: 55,
-  uv_power: 0,
-  duration: 360,   // 6h
-  fan_inner: 100,
-  fan_exhaust: 8,
-  notes: "PLA"
-},
-{
-  mode: DRY,
-  name: "DRY_PETG",
-  target_temp: 65,
-  uv_power: 0,
-  duration: 420,   // 7h
-  fan_inner: 100,
-  fan_exhaust: 10,
-  notes: "PETG"
-},
-{
-  mode: DRY,
-  name: "DRY_PETG_CF",
-  target_temp: 70,
-  uv_power: 0,
-  duration: 360,   // 6h
-  fan_inner: 100,
-  fan_exhaust: 12,
-  notes: "PETG-CF"
-},
-{
-  mode: DRY,
-  name: "DRY_ABS",
-  target_temp: 80,
-  uv_power: 0,
-  duration: 420,   // 7h
-  fan_inner: 100,
-  fan_exhaust: 15,
-  notes: "ABS/ASA"
-},
-{
-  mode: DRY,
-  name: "DRY_NYLON",
-  target_temp: 90,
-  uv_power: 0,
-  duration: 720,   // 12h (минимум 8)
-  fan_inner: 100,
-  fan_exhaust: 15,
-  notes: "Nylon / PA"
-}
+    {
+      mode: DRY,
+      name: "DRY_PLA",
+      target_temp: 55,
+      uv_power: 0,
+      duration: 360,   // 6h
+      fan_inner: 100,
+      fan_exhaust: 8,
+      notes: "PLA"
+    },
+    {
+      mode: DRY,
+      name: "DRY_PETG",
+      target_temp: 65,
+      uv_power: 0,
+      duration: 420,   // 7h
+      fan_inner: 100,
+      fan_exhaust: 10,
+      notes: "PETG"
+    },
+    {
+      mode: DRY,
+      name: "DRY_PETG_CF",
+      target_temp: 70,
+      uv_power: 0,
+      duration: 360,   // 6h
+      fan_inner: 100,
+      fan_exhaust: 12,
+      notes: "PETG-CF"
+    },
+    {
+      mode: DRY,
+      name: "DRY_ABS",
+      target_temp: 80,
+      uv_power: 0,
+      duration: 420,   // 7h
+      fan_inner: 100,
+      fan_exhaust: 15,
+      notes: "ABS/ASA"
+    },
+    {
+      mode: DRY,
+      name: "DRY_NYLON",
+      target_temp: 90,
+      uv_power: 0,
+      duration: 720,   // 12h (минимум 8)
+      fan_inner: 100,
+      fan_exhaust: 15,
+      notes: "Nylon / PA"
+    }
 ]
 
 ```
 ## CURE пресеты (engineering-grade)
 ```json
 [
-{
-  "mode": "CURE",
-  "name": "CURE_WHITE",
-  "target_temp": 32,
-  "uv_power": 25,
-  "duration": 10,
-  "fan_inner": 100,
-  "fan_exhaust": 0,
-  "notes": "Белая смола: анти-пожелтение"
-},
-{
-  "mode": "CURE",
-  "name": "CURE_CLEAR",
-  "target_temp": 28,
-  "uv_power": 20,
-  "duration": 8,
-  "fan_inner": 100,
-  "fan_exhaust": 0,
-  "notes": "Прозрачная смола: анти-мутность"
-},
-{
-  "mode": "CURE",
-  "name": "CURE_STANDARD",
-  "target_temp": 40,
-  "uv_power": 45,
-  "duration": 12,
-  "fan_inner": 100,
-  "fan_exhaust": 0,
-  "notes": "Стандартные смолы"
-},
-{
-  "mode": "CURE",
-  "name": "CURE_ABS",
-  "target_temp": 55,
-  "uv_power": 70,
-  "duration": 20,
-  "fan_inner": 100,
-  "fan_exhaust": 10,
-  "notes": "ABS-like / Tough / инженерные"
-}
+    {
+      "mode": "CURE",
+      "name": "CURE_WHITE",
+      "target_temp": 32,
+      "uv_power": 25,
+      "duration": 10,
+      "fan_inner": 100,
+      "fan_exhaust": 0,
+      "notes": "Белая смола: анти-пожелтение"
+    },
+    {
+      "mode": "CURE",
+      "name": "CURE_CLEAR",
+      "target_temp": 28,
+      "uv_power": 20,
+      "duration": 8,
+      "fan_inner": 100,
+      "fan_exhaust": 0,
+      "notes": "Прозрачная смола: анти-мутность"
+    },
+    {
+      "mode": "CURE",
+      "name": "CURE_STANDARD",
+      "target_temp": 40,
+      "uv_power": 45,
+      "duration": 12,
+      "fan_inner": 100,
+      "fan_exhaust": 0,
+      "notes": "Стандартные смолы"
+    },
+    {
+      "mode": "CURE",
+      "name": "CURE_ABS",
+      "target_temp": 55,
+      "uv_power": 70,
+      "duration": 20,
+      "fan_inner": 100,
+      "fan_exhaust": 10,
+      "notes": "ABS-like / Tough / инженерные"
+    }
 ]
 ```
 
