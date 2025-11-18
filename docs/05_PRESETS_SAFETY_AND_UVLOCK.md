@@ -30,16 +30,55 @@
 
 ---
 
-## Стартовые пресеты (рекомендация)
+## DRY пресеты (актуальная UV-LOCK политика)
+- `DRY_PLA`: 55°C, 6 ч, UV=0%, inner=35%, exhaust=15%
+- `DRY_PETG`: 65°C, 7 ч, UV=0%, inner=35%, exhaust=15%
+- `DRY_ABS`: 80°C, 7 ч, UV=0%, inner=35%, exhaust=15%
 
-### DRY (филамент, UV‑LOCK применяется)
-- `DRY_PLA`: `mode=DRY`, `T=55°C`, `uv=0%`, `time=360 мин (6 ч)`, `inner=35%`, `exhaust=15%`, `notes="PLA"`
-- `DRY_PETG`: `mode=DRY`, `T=65°C`, `uv=0%`, `time=420 мин (7 ч)`, `inner=35%`, `exhaust=15%`, `notes="PETG"`
-- `DRY_ABS`: `mode=DRY`, `T=80°C`, `uv=0%`, `time=420 мин (7 ч)`, `inner=35%`, `exhaust=15%`, `notes="ABS/ASA"`
+## CURE пресеты (engineering-grade)
+```json
+{
+  "mode": "CURE",
+  "name": "CURE_WHITE",
+  "target_temp": 32,
+  "uv_power": 25,
+  "duration": 10,
+  "fan_inner": 100,
+  "fan_exhaust": 0,
+  "notes": "Белая смола: анти-пожелтение"
+},
+{
+  "mode": "CURE",
+  "name": "CURE_CLEAR",
+  "target_temp": 28,
+  "uv_power": 20,
+  "duration": 8,
+  "fan_inner": 100,
+  "fan_exhaust": 0,
+  "notes": "Прозрачная смола: анти-мутность"
+},
+{
+  "mode": "CURE",
+  "name": "CURE_STANDARD",
+  "target_temp": 40,
+  "uv_power": 45,
+  "duration": 12,
+  "fan_inner": 100,
+  "fan_exhaust": 0,
+  "notes": "Стандартные смолы"
+},
+{
+  "mode": "CURE",
+  "name": "CURE_ABS",
+  "target_temp": 55,
+  "uv_power": 70,
+  "duration": 20,
+  "fan_inner": 100,
+  "fan_exhaust": 10,
+  "notes": "ABS-like / Tough / инженерные"
+}
+```
 
-### CURE (UV разрешён; **не для филамента**)
-- `CURE_STD`: `mode=CURE`, `T=40°C`, `uv=100%`, `time=15 мин`, `inner=30%`, `exhaust=10%`, `notes="Стандартная смола"`
-- `CURE_THICK`: `mode=CURE`, `T=45°C`, `uv=100%`, `time=30 мин`, `inner=30%`, `exhaust=10%`, `notes="Толстые детали"`
 
 > Параметры основаны на согласованной политике проекта: DRY без UV, мягкий обдув, длительность 4–8 ч; CURE допускает T=30–50°C + UV.
 
