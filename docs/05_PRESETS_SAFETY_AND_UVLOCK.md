@@ -32,6 +32,7 @@
 
 ## DRY пресеты (актуальная UV-LOCK политика)
 ```json
+[
 {
   mode: DRY,
   name: "DRY_PLA",
@@ -82,10 +83,12 @@
   fan_exhaust: 15,
   notes: "Nylon / PA"
 }
+]
 
 ```
 ## CURE пресеты (engineering-grade)
 ```json
+[
 {
   "mode": "CURE",
   "name": "CURE_WHITE",
@@ -126,6 +129,7 @@
   "fan_exhaust": 10,
   "notes": "ABS-like / Tough / инженерные"
 }
+]
 ```
 
 
