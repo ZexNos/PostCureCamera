@@ -31,9 +31,58 @@
 ---
 
 ## DRY пресеты (актуальная UV-LOCK политика)
-- `DRY_PLA`: 55°C, 6 ч, UV=0%, inner=35%, exhaust=15%
-- `DRY_PETG`: 65°C, 7 ч, UV=0%, inner=35%, exhaust=15%
-- `DRY_ABS`: 80°C, 7 ч, UV=0%, inner=35%, exhaust=15%
+```json
+{
+  mode: DRY,
+  name: "DRY_PLA",
+  target_temp: 55,
+  uv_power: 0,
+  duration: 360,   // 6h
+  fan_inner: 100,
+  fan_exhaust: 8,
+  notes: "PLA"
+},
+{
+  mode: DRY,
+  name: "DRY_PETG",
+  target_temp: 65,
+  uv_power: 0,
+  duration: 420,   // 7h
+  fan_inner: 100,
+  fan_exhaust: 10,
+  notes: "PETG"
+},
+{
+  mode: DRY,
+  name: "DRY_PETG_CF",
+  target_temp: 70,
+  uv_power: 0,
+  duration: 360,   // 6h
+  fan_inner: 100,
+  fan_exhaust: 12,
+  notes: "PETG-CF"
+},
+{
+  mode: DRY,
+  name: "DRY_ABS",
+  target_temp: 80,
+  uv_power: 0,
+  duration: 420,   // 7h
+  fan_inner: 100,
+  fan_exhaust: 15,
+  notes: "ABS/ASA"
+},
+{
+  mode: DRY,
+  name: "DRY_NYLON",
+  target_temp: 90,
+  uv_power: 0,
+  duration: 720,   // 12h (минимум 8)
+  fan_inner: 100,
+  fan_exhaust: 15,
+  notes: "Nylon / PA"
+}
+
 
 ## CURE пресеты (engineering-grade)
 ```json
