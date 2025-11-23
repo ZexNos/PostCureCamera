@@ -2,15 +2,15 @@
 # Post‑Cure Camera — MASTER SPEC v0.2.1
 > **Status:** authoritative single source of truth.  
 > **Date:** 2025-11-01T01:35:31  
-> **Covers:** UI/UX, Control Logic, MQTT (telemetry‑only), Safety, Hardware (logical), Bring‑up.  
+> **Covers:** UI/UX, Control Logic, MQTT, Safety, OTA/Recovery, Hardware (logical), Bring‑up.  
 > **Supersedes:** `postcure_camera_control_logic_MQTT_HA.md` §5/8/11 (old v0.1 MQTT & Preset), duplicates in `postcure_camera_UI_Spec_v0.2_*.md` §18/20.
 
 ---
 
 ## 0. Glossary & Versioning
 - **MASTER SPEC** — этот документ. Все прочие документы считаются производными.
-- **FW v0.2.x** — прошивка, реализующая MQTT‑телеметрию, два вентилятора и UV‑LOCK для DRY. OTA/Recovery в этой ветке не используется.
-- **UI Spec** — экраны и потоки (RUN/OPTIONS/SETTINGS/ERROR), синхронизированы с этим мастер‑документом.
+- **FW v0.2.x** — прошивка, реализующая Unified MQTT, два вентилятора, UV‑LOCK для DRY, OTA/Recovery.
+- **UI Spec** — экраны и потоки (RUN/OPTIONS/SETTINGS/ERROR/OTA), синхронизированы с этим мастер‑документом.
 - **Control Logic** — FSM, датчики/актуаторы, PID/безопасность; правила и API тут — первичны.
 
 ---
@@ -55,34 +55,11 @@ typedef struct {
 ---
 
 ## 4. FSM & UI (high‑level)
-
-### 4.2 Runtime FSM (detailed)
-- **idle** — камера свободна.
-- **cure** — UV-засветка по профилю.
-- **dry** — сушка филамента (UV-LOCK).
-- **purge** — продувка/остужение после CURE/DRY/ERROR или ручной.
-- **finish** — завершение цикла, краткий переходный этап.
-- **error** — критическое состояние (OverTemp/SensorFault).
-
-**Transitions:**
-- IDLE → CURE / DRY / PURGE / ERROR
-- CURE → FINISH / PURGE / ERROR / IDLE
-- DRY → FINISH / PURGE / ERROR / IDLE
-- PURGE → IDLE / ERROR
-- FINISH → IDLE / PURGE
-- ERROR → IDLE / PURGE
-
-**Rules:**
-- Safety имеет приоритет над FSM.
-- MQTT публикует только: state, temp_main, heater_pwm, heater_corr.
-- state публикуется только при изменении.
-- после потери питания: IDLE + предложение продолжить.
-
-**States:** `BOOT → HOME_DASH → RUN_VIEW → RUN_REPORT`,  
-**Runtime modes:** `idle`, `cure`, `dry`, `purge`, `finish`, `error`.  
+**States:** `BOOT → (RECOVERY_PROMPT?) → HOME_DASH → RUN_VIEW → RUN_REPORT`,  
 **Errors:** `ERROR_VIEW (S800)` с `[Acknowledge]`,  
+**OTA:** `OTA_VIEW (S995)` — блокирующий прогресс, «Updating… Do not power off».  
 **Wi‑Fi onboarding:** AP `PostCure_Setup‑XXXX` + **Captive Portal** на первом запуске/сбросе.  
-RGB‑LED: стандартная палитра статусов (BOOT/Wi‑Fi/MQTT/ERROR).
+RGB‑LED: стандартная палитра статусов, включает `OTA=blue breathing`, `RECOVERY=orange/violet`.
 
 ### 4.1 Global Top Status Bar
 - Всегда присутствует сверху (`y=0..15`) и не зависит от текущего экрана (`RUN_VIEW`, `OPTIONS`, `ERROR`, `OTA` и т.п.).
@@ -98,32 +75,52 @@ RGB‑LED: стандартная палитра статусов (BOOT/Wi‑Fi/
 
 ---
 
-## 5. MQTT — Telemetry v0.2
+## 5. MQTT — Unified v0.2
 **Base prefix:** `postcure/{device_id}/`
 
 ### 5.1 Topics
-- `.../state` — **retain JSON**, включает текущее состояние и последние значения телеметрии.
-- `.../tele/now` — периодическая телеметрия (тот же набор полей, неретейн).
-- `.../log` — логи/события (ERROR, start/stop и т.п.).
+- `.../state` — **retain JSON**, источник правды.
+- `.../tele/now` — быстрая телеметрия (subset), неретейн.
+- `.../cmd` — команды JSON.
+- `.../log` — логи/события.
+- `.../ota/state` — статусы OTA (retain).
+- `.../ota/progress` — прогресс OTA (0–100, неретейн).
 
 ### 5.2 State (retain)
-```json
+```
 {
-  "fw": "0.2.x",
-  "state": "idle|cure|dry|purge|finish|error",
-  "temp_main": 38.7,
-  "heater_pwm": 42,
-  "heater_corr": 0.87
+  "fw":"0.2.x",
+  "mode":"idle|dry|cure|service|error",
+  "phase":"idle|preheat|run|hold|cooldown|stopped",
+  "lockout": false,
+  "safe": false,
+  "profile": {
+    "name":"PLA_55C","isDry":true,"targetT_c":55,"uv_pct":0,"fan_int":40,"fan_exh":20,"duration_min":240
+  },
+  "actuators": {
+    "heater_pct":35,"uv_pct":0,
+    "fan":{"int_pct":40,"exh_pct":20,"int_rpm":1180,"exh_rpm":980},
+    "motor_rpm":5
+  },
+  "sensors": {
+    "t_air_c":43.2,"t_exh_c":38.5,"t_ptc_c":88.1,"rh_air_pct":12.4,"rh_exh_pct":14.0
+  },
+  "err":""
 }
 ```
 
-### 5.3 Commands
-В текущей версии прошивки **команды по MQTT не поддерживаются**.
-MQTT используется только как канал телеметрии и логов, управление выполняется локально через UI.
+### 5.3 Commands (`.../cmd`)
+```
+{"action":"start","mode":"dry|cure","profile":"PLA_55C"}
+{"action":"stop"}
+{"set":{"uv":30,"fan_int":50,"fan_exh":20}}
+{"lockout":true}
+{"ota":{"url":"https://host/fw/cam.bin","sha256":"<hex>"}}
+```
+Правила: `set` — немедленная установка (с проверками SAFE/LOCKOUT/границ). Ответ отражается в `.../state`.
 
 ### 5.4 Telemetry (`.../tele/now`)
-Периодическая телеметрия, дублирующая ключевые поля `state` (прежде всего `temp_main`, `heater_pwm`, `heater_corr`), неретейн.
-Частота публикации: порядка 1 Гц в режимах CURE/DRY, реже или по событию в состояниях IDLE/FINISH.
+Подмножество `state` (температуры/влажности/RPM/проценты), неретейн.
 
 ### 5.5 Wi-Fi / MQTT configuration model
 - Параметры Wi-Fi (SSID/пароль) и MQTT (broker, port, base topic) задаются через NVS / компиляционные значения.
@@ -176,9 +173,10 @@ UX: остановить RUN, `OTA_VIEW`, RGB blue‑breath.
 ---
 
 ## 9. Implementation Notes
-- DRY UV‑LOCK: прошивка принудительно устанавливает `uv_pct=0`, если профиль относится к типу DRY.
+- DRY UV‑LOCK: прошивка игнорирует любые UV‑команды, если `profile.isDry==true`.
 - Все проценты ограничивать 0..100 на устройстве.
-- Публикация MQTT-состояния (`state`) выполняется по событию (при изменении), телеметрия (`tele/now`) — с разумной частотой для настройки PID (порядка 1 Гц в режиме работы).
+- Любые команды меняют `.../state` и публикуются не реже 500 ms (debounce).
+- При OTA — немедленный STOP и блокировка UI до завершения.
 
 ---
 

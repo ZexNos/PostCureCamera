@@ -160,38 +160,63 @@ Wi‑Fi подключение фиксировано в прошивке (SSID/
 
     ---
 
-    ## 3. MQTT Telemetry — Minimal Mode (2025-11)
+    ## 3. MQTT Access Note
 
-**Role:** камера публикует только телеметрию и состояние, без приёма команд, без Discovery.
+    (source: docs/README_Files/MQTT_Access_Note.md)
 
-### Connection (hardcoded)
-- host: 10.0.0.50
-- port: 1883
-- user/pass: прошиты в FW
-- client_id: postcure-s3
+    # MQTT Access Note — Post‑Cure Camera
+**Updated:** 2025-11-07 21:49
 
-### Topics
-- `postcure/state`
-- `postcure/tele/now`
-- `postcure/log`
+**Broker:** встроенный Mosquitto‑аддон Home Assistant  
+**Role:** Home Assistant acts as MQTT broker; Post‑Cure Camera acts as client  
 
-### state (retain)
-```json
-{
- "fw":"0.2.x",
- "state":"idle|cure|dry|purge|finish|error",
- "temp_main":0,
- "heater_pwm":0,
- "heater_corr":1.0
-}
+---
+
+## Connection parameters
+
+| Параметр | Значение | Комментарий |
+|-----------|-----------|--------------|
+| **Host** | `10.0.0.50` | IP Home Assistant |
+| **Port** | `1883` | без TLS (обычный MQTT) |
+| **User / Pass** | `vlad` / `••••` | учётка MQTT‑аддона |
+| **Client ID** | `postcure-s3` | уникальное имя ESP32 |
+| **Discovery prefix** | `homeassistant` | для автоматического обнаружения |
+| **Topic root** | `postcure/` | все темы устройства |
+
+---
+
+## Security / protocol notes
+
+- Никаких **API‑токенов HA** или OAuth‑ключей не требуется — только логин/пароль Mosquitto.  
+- **TLS/SSL (порт 8883)** не используется в локальной сети.  
+- При необходимости допускается добавить Last Will topic `postcure/status/online`.
+
+---
+
+## Example topics
+
+```
+postcure/status/heater   → "ON" / "OFF"
+postcure/status/uv       → "ON" / "OFF"
+postcure/status/temp     → "43.1"
+postcure/status/hum      → "27.8"
+homeassistant/switch/postcure/heater/config  → { JSON для discovery }
 ```
 
-### Notes
-- нет MQTT-команд
-- нет OTA
-- используется только для PID-графиков
+---
 
-## 4. Protected Files — Frozen UI Hardware Layer
+## Summary
+
+Post‑Cure Camera подключается к брокеру по IP **10.0.0.50** на **1883/tcp**,  
+аутентификация — **vlad + пароль**, без TLS.  
+Для Home Assistant действует префикс обнаружения `homeassistant/`;  
+все собственные темы камеры начинаются с `postcure/`.  
+Никаких API‑токенов не нужно.
+
+
+    ---
+
+    ## 4. Protected Files — Frozen UI Hardware Layer
 
     (source: docs/PROTECTED_FILES.md)
 
